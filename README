@@ -60,3 +60,7 @@ Sipa's showwallet branch has a new command called "importprivkey" that
 accepts the base-58 encoded private key.  Vanitygen has been tested to 
 work with that version of bitcoin.
 
+Internet of People can be imported into the IoP client by going into the 
+the clients console and using the importprivkey "privatekey" command.
+After replacing the "privkey" text with the desired address' privatekey.
+
