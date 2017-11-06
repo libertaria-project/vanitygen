@@ -5,7 +5,7 @@
  * Vanitygen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Vanitygen is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -423,9 +423,9 @@ server_workitem_add(server_request_t *reqp, workitem_t *wip)
 		avl_root_init(&pbatch->items);
 		pbatch->total_value = 0;
 		pbatch->pubkey = wip->pubkey;
-		pbatch->pubkey_hex = EC_POINT_point2hex(reqp->group, 
-					wip->pubkey, 
-					POINT_CONVERSION_UNCOMPRESSED, 
+		pbatch->pubkey_hex = EC_POINT_point2hex(reqp->group,
+					wip->pubkey,
+					POINT_CONVERSION_UNCOMPRESSED,
 					NULL);
 		pubkeybatch_avl_insert(&reqp->items, pbatch);
 		reqp->nitems++;
@@ -439,7 +439,7 @@ server_workitem_add(server_request_t *reqp, workitem_t *wip)
 	if (wip->pubkey && wip->pubkey != pbatch->pubkey)
 		EC_POINT_free(wip->pubkey);
 	wip->pubkey = pbatch->pubkey;
-	
+
 	pbatch->nitems++;
 	pbatch->total_value += wip->value;
 	return 0;
@@ -917,7 +917,7 @@ main(int argc, char **argv)
 	if (verbose > 0) {
 		fprintf(stderr,
 			"WARNING: Built with " OPENSSL_VERSION_TEXT "\n"
-			"WARNING: Use OpenSSL 1.0.0d+ for best performance\n");
+			"WARNING: Use OpenSSL 1.1.0f+ for best performance\n");
 	}
 #endif
 	curl_easy_init();
@@ -1038,12 +1038,12 @@ main(int argc, char **argv)
 				else {
 					active_pkb_value += wip->value;
 				}
-				
+
 				assert(vcp->vc_npatterns);
 			}
 
-			fprintf(stderr, 
-				"\nTotal value for current work: %f BTC/Gkey\n", 
+			fprintf(stderr,
+				"\nTotal value for current work: %f BTC/Gkey\n",
 				active_pkb_value);
 			res = vg_context_start_threads(vcp);
 			if (res)

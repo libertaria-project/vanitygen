@@ -5,7 +5,7 @@
  * Vanitygen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Vanitygen is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -293,7 +293,7 @@ main(int argc, char **argv)
 	if (verbose > 0) {
 		fprintf(stderr,
 			"WARNING: Built with " OPENSSL_VERSION_TEXT "\n"
-			"WARNING: Use OpenSSL 1.0.0d+ for best performance\n");
+			"WARNING: Use OpenSSL 1.1.0f+ for best performance\n");
 	}
 #endif
 

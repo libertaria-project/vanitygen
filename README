@@ -32,19 +32,28 @@ lists of prefixes will have little effect on search rate.  Searching
 for N regular expressions will have varied performance depending on the 
 complexity of the expressions, but O(N) performance can be expected.
 
+This version has been extended to use with Internet of People (IoP) token
+addresses. This feature can be use with the "-Z" option.
+First character of the addres in the IoP case bust be p,
+and the second character must be uppercase.
+The desired address pattern cannot contain "I" "O" "l" "0".
+The second character in the pattern cannot be : 
+those above, "1", "2", "3", "4", "V", "W", "X", "Y", "Z".
+
+
 By default, vanitygen will spawn one worker thread for each CPU in your 
 system.  If you wish to limit the number of worker threads created by 
 vanitygen, use the "-t" option.
 
-The example below completed quicker than average, and took about 45 sec 
-to finish, using both cores of my aging Core 2 Duo E6600:
+The example below completed quicker than average, and took about 2 sec 
+to finish, using a laptop with Intel® Core™ i7-7500U CPU @ 2.70GHz × 4:
 
-$ ./vanitygen 1Love
-Difficulty: 4476342
+$ ./vanitygen -Z pLove
+Difficulty: 4553521
 [48165 K/s][total 2080000][Prob 37.2%][50% in 21.2s]                           
-Pattern: 1Love
-Address: 1LoveRg5t2NCDLUZh6Q8ixv74M5YGVxXaN
-Privkey: 5JLUmjZiirgziDmWmNprPsNx8DYwfecUNk1FQXmDPaoKB36fX1o
+Pattern: pLove                                                                 
+Address: pLoveGE6AushTntZQvjTiXgvD8FGZ8Xtaq
+Privkey: 2f4HKSAxjPWGvjPEhVuWBTshfFN6taPber3m2Zi12ugwWN9EeEK
 
 Currently, it is difficult to import the private key into bitcoin.  
 Sipa's showwallet branch has a new command called "importprivkey" that 

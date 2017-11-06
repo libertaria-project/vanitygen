@@ -5,7 +5,7 @@
  * Vanitygen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version. 
+ * any later version.
  *
  * Vanitygen is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,6 @@
 #include "pattern.h"
 #include "util.h"
 
-#define BN_MASK2        (0xffffffffffffffffL)
 const char *version = VANITYGEN_VERSION;
 
 
@@ -90,8 +89,8 @@ vg_thread_loop(void *arg)
 		exit(1);
 	}
 
-	BN_set_word(vxcp->vxc_bntmp, ptarraysize);
-	EC_POINT_mul(pgroup, pbatchinc, vxcp->vxc_bntmp, NULL, NULL,
+	BN_set_word(&vxcp->vxc_bntmp, ptarraysize);
+	EC_POINT_mul(pgroup, pbatchinc, &vxcp->vxc_bntmp, NULL, NULL,
 		     vxcp->vxc_bnctx);
 	EC_POINT_make_affine(pgroup, pbatchinc, vxcp->vxc_bnctx);
 
@@ -99,6 +98,7 @@ vg_thread_loop(void *arg)
 	rekey_at = 0;
 	nbatch = 0;
 	vxcp->vxc_key = pkey;
+	//deusz
 	vxcp->vxc_binres[0] = vcp->vc_addrtype;
 	c = 0;
 	output_interval = 1000;
@@ -126,12 +126,12 @@ vg_thread_loop(void *arg)
 			npoints = 0;
 
 			/* Determine rekey interval */
-			EC_GROUP_get_order(pgroup, vxcp->vxc_bntmp,
+			EC_GROUP_get_order(pgroup, &vxcp->vxc_bntmp,
 					   vxcp->vxc_bnctx);
-			BN_sub(vxcp->vxc_bntmp2,
-			       vxcp->vxc_bntmp,
+			BN_sub(&vxcp->vxc_bntmp2,
+			       &vxcp->vxc_bntmp,
 			       EC_KEY_get0_private_key(pkey));
-			rekey_at = BN_get_word(vxcp->vxc_bntmp2);
+			rekey_at = BN_get_word(&vxcp->vxc_bntmp2);
 			if ((rekey_at == BN_MASK2) || (rekey_at > rekey_max))
 				rekey_at = rekey_max;
 			assert(rekey_at > 0);
@@ -314,6 +314,11 @@ usage(const char *name)
 "-1            Stop after first match\n"
 "-N            Generate namecoin address\n"
 "-M            Generate martexcoin address\n"
+"-Z            Internet of People address\n"
+"              	-second character must be uppercase!\n"
+"              	-cannot contain the following characters : \"I\" \"O\" \"l\" \"0\"\n"
+"              	-the second character cannot be : those above, \n"
+"              	\"1\", \"2\", \"3\", \"4\", \"V\", \"W\", \"X\", \"Y\", \"Z\"\n"
 "-T            Generate bitcoin testnet address\n"
 "-X <version>  Generate address with the given version\n"
 "-F <format>   Generate address with the given format (pubkey or script)\n"
@@ -363,7 +368,7 @@ main(int argc, char **argv)
 
 	int i;
 
-	while ((opt = getopt(argc, argv, "vqnrik1eE:P:NTMX:F:t:h?f:o:s:")) != -1) {
+	while ((opt = getopt(argc, argv, "vqnrik1eE:P:NTZMX:F:t:h?f:o:s:")) != -1) {
 		switch (opt) {
 		case 'v':
 			verbose = 2;
@@ -396,11 +401,16 @@ main(int argc, char **argv)
 			privtype = 239;
 			scriptaddrtype = 196;
 			break;
-                case 'M':
-                        addrtype = 50;
-                        privtype = 178;
-                        scriptaddrtype = 5;
-                        break;
+    case 'M':
+      addrtype = 50;
+      privtype = 178;
+      scriptaddrtype = 5;
+      break;
+		case 'Z':
+			addrtype = 117;
+			scriptaddrtype = 174;
+			privtype = 49;
+      break;
 		case 'X':
 			addrtype = atoi(optarg);
 			privtype = 128 + addrtype;
@@ -434,7 +444,6 @@ main(int argc, char **argv)
 			}
 			break;
 		}
-			
 		case 'e':
 			prompt_password = 1;
 			break;
@@ -502,7 +511,7 @@ main(int argc, char **argv)
 	if (verbose > 0) {
 		fprintf(stderr,
 			"WARNING: Built with " OPENSSL_VERSION_TEXT "\n"
-			"WARNING: Use OpenSSL 1.0.0d+ for best performance\n");
+			"WARNING: Use OpenSSL 1.1.0f+ for best performance\n");
 	}
 #endif
 
@@ -619,6 +628,7 @@ main(int argc, char **argv)
 	if (simulate)
 		return 0;
 
+	//vg_context_clear_all_patterns(vcp);
 	if (!start_threads(vcp, nthreads))
 		return 1;
 	return 0;

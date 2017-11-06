@@ -4,7 +4,7 @@ make
 Windows:
 Tools: Microsoft Visual Studio 2010, Visual C++
 Prerequisites:
-  - OpenSSL 1.0.0d: http://www.slproweb.com/products/Win32OpenSSL.html
+  - OpenSSL 1.1.0f: http://www.slproweb.com/products/Win32OpenSSL.html
   - pthreads-Win32: http://sourceware.org/pthreads-win32/
   - PCRE: http://www.psyon.org/projects/pcre-win32/
   - AMD APP SDK -or- NVIDIA CUDA SDK
